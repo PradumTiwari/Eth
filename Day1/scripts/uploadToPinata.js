@@ -9,7 +9,8 @@ const PINATA_JWT = process.env.PINATA_JWT;
 if (!PINATA_JWT) throw new Error("Add PINATA_JWT to .env");
 
 async function uploadFile(filePath) {
-  const form = new FormData();
+
+  const form = new FormData();// creates form data for pinata
   form.append("file", fs.createReadStream(filePath));
   const res = await axios.post("https://api.pinata.cloud/pinning/pinFileToIPFS", form, {
     maxBodyLength: Infinity,
