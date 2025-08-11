@@ -1,0 +1,17 @@
+{
+  "GOLD": {
+    "imageCID": "QmaXWZUZ6DyWZdfEgQHx1Lh5KXa5Vyq2daGG2wvM6vwbkx",
+    "metadataCID": "QmTYG4v7DmNf9sCuLGEAfc9HdYoakrWcJDdQrRzUm9bawi",
+    "metadataURI": "ipfs://QmTYG4v7DmNf9sCuLGEAfc9HdYoakrWcJDdQrRzUm9bawi"
+  },
+  "SILVER": {
+    "imageCID": "QmeYWHtqwqyxpoThSpRBhtMbhg7atepE4e5fDcNtzYvPuj",
+    "metadataCID": "QmYnM3QwkStCkZJ8TfHAF9SErjEtGRf69aDg8qqkFW9y3c",
+    "metadataURI": "ipfs://QmYnM3QwkStCkZJ8TfHAF9SErjEtGRf69aDg8qqkFW9y3c"
+  },
+  "SWORD": {
+    "imageCID": "QmegGN3m2nd93gbW9useLT29KUEKfZJWFrz8j8u6v6g4fZ",
+    "metadataCID": "QmNWNGA4BQLehFxJfs1TVZdjE1f5vvsVbCFLWfLGHvksi5",
+    "metadataURI": "ipfs://QmNWNGA4BQLehFxJfs1TVZdjE1f5vvsVbCFLWfLGHvksi5"
+  }
+}
