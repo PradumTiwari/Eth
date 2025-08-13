@@ -1,16 +1,11 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import MintPage from "./pages/MintPage";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-   <h1 className=' text-3xl'>Hello</h1>
-    </>
-  )
+    <div className="bg-gray-900 text-white h-screen flex items-center justify-center">
+    <MintPage/>
+    </div>
+  );
 }
 
-export default App
+export default App;
