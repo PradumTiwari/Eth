@@ -1,23 +1,33 @@
-import express from "express";
-import serverless from "serverless-http";
 import axios from "axios";
-import dotenv from "dotenv";
+import Cors from "cors";
 
-dotenv.config();
-const app = express();
+function initMiddleware(middleware) {
+  return (req, res) =>
+    new Promise((resolve, reject) => {
+      middleware(req, res, (result) => {
+        if (result instanceof Error) return reject(result);
+        return resolve(result);
+      });
+    });
+}
 
-// Enable JSON parsing
-app.use(express.json());
+const cors = initMiddleware(
+  Cors({
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS"],
+  })
+);
 
-const PINATA_JWT = process.env.PINATA_JWT;
+export default async function handler(req, res) {
+  await cors(req, res);
 
-app.post(async (req, res) => {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
+    const PINATA_JWT = process.env.PINATA_JWT;
     const jsonData = req.body;
-
-    if (!jsonData || Object.keys(jsonData).length === 0) {
-      return res.status(400).json({ error: "No JSON data provided" });
-    }
 
     const response = await axios.post(
       "https://api.pinata.cloud/pinning/pinJSONToIPFS",
@@ -30,12 +40,9 @@ app.post(async (req, res) => {
       }
     );
 
-    res.json({ ipfsHash: response.data.IpfsHash });
+    res.status(200).json({ ipfsHash: response.data.IpfsHash });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
-});
-
-export default app;
-export const handler = serverless(app);
+}

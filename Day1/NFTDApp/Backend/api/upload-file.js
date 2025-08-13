@@ -2,26 +2,54 @@ import fileUpload from "express-fileupload";
 import axios from "axios";
 import FormData from "form-data";
 import fs from "fs";
-import express from "express";
-import serverless from "serverless-http";
-import dotenv from "dotenv";
+import Cors from "cors";
 
-dotenv.config();
-const app = express();
+// Initialize CORS middleware
+function initMiddleware(middleware) {
+  return (req, res) =>
+    new Promise((resolve, reject) => {
+      middleware(req, res, (result) => {
+        if (result instanceof Error) return reject(result);
+        return resolve(result);
+      });
+    });
+}
 
-// Enable JSON parsing
-app.use(express.json());
+const cors = initMiddleware(
+  Cors({
+    origin: "*",
+    methods: ["GET", "POST", "OPTIONS"],
+  })
+);
 
-// File upload setup
-app.use(fileUpload({
-  useTempFiles: true,
-  tempFileDir: "/tmp/"
-}));
+export const config = {
+  api: {
+    bodyParser: false, // for file uploads
+  },
+};
 
-const PINATA_JWT = process.env.PINATA_JWT;
+export default async function handler(req, res) {
+  await cors(req, res);
 
-app.post(async (req, res) => {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
   try {
+    // Parse file using express-fileupload
+    await new Promise((resolve, reject) => {
+      fileUpload({ useTempFiles: true, tempFileDir: "/tmp/" })(
+        req,
+        res,
+        (err) => {
+          if (err) reject(err);
+          else resolve();
+        }
+      );
+    });
+
+    const PINATA_JWT = process.env.PINATA_JWT;
+
     if (!req.files || !req.files.file) {
       return res.status(400).json({ error: "No file uploaded" });
     }
@@ -43,12 +71,9 @@ app.post(async (req, res) => {
       }
     );
 
-    res.json({ ipfsHash: response.data.IpfsHash });
+    res.status(200).json({ ipfsHash: response.data.IpfsHash });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: err.message });
   }
-});
-
-export default app;
-export const handler = serverless(app);
+}
