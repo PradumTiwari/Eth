@@ -30,12 +30,13 @@ contract NFTMarketplace is ReentrancyGuard, Ownable{
         event ItemUpdated(address indexed nftAddress,uint256 indexed tokenId,uint256 newPrice);
 
 
-        constructor() Ownable(msg.sender){}
+    constructor() Ownable(msg.sender) {}
+
 
 
         function listItem(address nftAddress,uint256 tokenId,uint256 price) external nonReentrant{
             require(price>0,"Price must be greater than zero");
-            IERC721 nft=IERC721(nftAddress);
+            IERC721 nft=IERC721(nftAddress);   //Created a interface from the nft address and IERC20 which helps to access function
 
             //Check that msg.sender owns the nft
             require(nft.ownerOf(tokenId)==msg.sender,"You are not a Owner of this nft");
