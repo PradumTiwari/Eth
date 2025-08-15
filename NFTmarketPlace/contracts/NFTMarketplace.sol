@@ -52,7 +52,9 @@ contract NFTMarketplace is ReentrancyGuard, Ownable{
         function buyItem(address nftAddress,uint256 tokenId) external payable nonReentrant{
             Listing memory listedItem=listings[nftAddress][tokenId];
             require(listedItem.price>0,"Item not Listed For sale");
-            require(msg.value>=listedItem.price,"Not Enough ETH sent");
+            require(msg.value<=listedItem.price,"Not Enough ETH sent");
+
+            
 
             //Remove the listing before the transfering
             delete listings[nftAddress][tokenId];
@@ -64,7 +66,7 @@ contract NFTMarketplace is ReentrancyGuard, Ownable{
             //Transfer the nft from the seller to the buyer
             IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
 
-            emit ItemSold(nftAddress,tokenId,msg.sender,listedItem.price);
+            emit ItemSold(nftAddress,tokenId,msg.sender,msg.value);
         }
 
 
