@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Heart, Search } from "lucide-react";
-
+import { Link } from "react-router-dom";
 const dummyNFTs = [
   {
     id: 1,
@@ -93,7 +93,9 @@ export default function Explore() {
 
     
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    
         {filteredNFTs.map((nft, index) => (
+           <Link key={nft.id} to={`/nft/${nft.id}`}>
           <motion.div
             key={nft.id}
             initial={{ opacity: 0, y: 40 }}
@@ -140,8 +142,13 @@ export default function Explore() {
                 Buy Now
               </motion.button>
             </div>
+            
           </motion.div>
-        ))}
+
+           </Link>
+        )
+        
+        )}
       </div>
     </div>
   );

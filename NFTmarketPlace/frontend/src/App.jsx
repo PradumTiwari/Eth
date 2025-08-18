@@ -5,8 +5,9 @@ import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Explore from './pages/Explore'
-import MyNFTs from './components/MyNFTs'
+import MyNFTs from './pages/MyNFTs'
 import ListNFT from './components/ListNFT'
+import NFTDetails from './pages/NFTDetails'
 function App() {
  
 
@@ -20,8 +21,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/explore" element={<Explore />} />
-          <Route path="/my-nfts" element={<MyNFTs />} />
+          <Route path="/my-nfts" element={<MyNFTs/>} />
           <Route path="/list" element={<ListNFT />} />
+          <Route path='nft/:id' element={<NFTDetails/>}></Route>
         </Routes>
       </div>
    
