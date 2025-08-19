@@ -6,8 +6,9 @@ import Navbar from './components/Navbar'
 import Home from './components/Home'
 import Explore from './pages/Explore'
 import MyNFTs from './pages/MyNFTs'
-import ListNFT from './components/ListNFT'
+import ListNFT from './pages/ListNFT'
 import NFTDetails from './pages/NFTDetails'
+import Profile from './pages/Profile';
 function App() {
  
 
@@ -24,6 +25,7 @@ function App() {
           <Route path="/my-nfts" element={<MyNFTs/>} />
           <Route path="/list" element={<ListNFT />} />
           <Route path='nft/:id' element={<NFTDetails/>}></Route>
+          <Route path='/profile' element={<Profile/>}></Route>
         </Routes>
       </div>
    
