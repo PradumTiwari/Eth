@@ -1,62 +1,41 @@
+import React from "react";
 import { useAccount } from "wagmi";
-import { useEffect, useState } from "react";
+import MintButton from "../components/MintButton";
 
-
-export default function Profile() {
+const Profile = () => {
   const { address, isConnected } = useAccount();
-  const [nfts, setNfts] = useState([]);
-
-  useEffect(() => {
-    const loadNFTs = async () => {
-
-      if (!isConnected) return;
-
-      try {
-        const contract = nftContract();
-        const balance = await contract.read.balanceOf([address]);
-        const items = [];
-
-        for (let i = 0; i < Number(balance); i++) {
-          // since MockNFT doesn’t have tokenOfOwnerByIndex,
-          // we’ll just display based on tokenIdCounter
-          items.push({
-            id: i,
-            name: `MockNFT #${i}`,
-            image: `https://picsum.photos/300?random=${i}`,
-          });
-        }
-        setNfts(items);
-      } catch (err) {
-        console.error("Error loading NFTs", err);
-      }
-    };
-
-    loadNFTs();
-  }, [address, isConnected]);
-
-  if (!isConnected) return <p>Please connect your wallet.</p>;
 
   return (
-    <div className="px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6">Your Profile</h1>
-      <p className="mb-4 text-gray-600">Wallet: {address}</p>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 p-8">
+      <div className="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-4">Profile</h1>
 
-      {nfts.length === 0 ? (
-        <p>No NFTs owned yet.</p>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {nfts.map((nft) => (
-            <div key={nft.id} className="bg-white p-4 rounded-xl shadow">
-              <img
-                src={nft.image}
-                alt={nft.name}
-                className="w-full h-56 object-cover rounded-lg"
-              />
-              <h2 className="mt-2 font-semibold">{nft.name}</h2>
+        {isConnected ? (
+          <>
+            <p className="text-gray-700 mb-6">
+              Connected wallet: <br />
+              <span className="font-mono text-sm text-purple-600">
+                {address}
+              </span>
+            </p>
+
+            {/* Mint Button */}
+            <MintButton />
+
+            {/* NFT Gallery (stubbed for now) */}
+            <div className="mt-8">
+              <h2 className="text-lg font-semibold mb-2">Your NFTs</h2>
+              <p className="text-gray-500">No NFTs loaded yet...</p>
             </div>
-          ))}
-        </div>
-      )}
+          </>
+        ) : (
+          <p className="text-gray-500">
+            Please connect your wallet to view your profile.
+          </p>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default Profile;

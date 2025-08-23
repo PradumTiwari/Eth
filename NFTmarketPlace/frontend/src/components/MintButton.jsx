@@ -3,7 +3,8 @@ import { useWriteContract } from "wagmi";
 import ContractArtifact from "../abi/MockNFT.json";
 
 const abi = ContractArtifact.abi;
-const CONTRACT_ADDRESS = "0x0Ea9c6c0C07A7790940E996d3a594951F86c5605";
+const CONTRACT_ADDRESS =import.meta.env.VITE_CONTRACT_ADDRESS;
+console.log("Contract address",CONTRACT_ADDRESS);
 
 const MintButton = () => {
   const { writeContract, data, isPending, error } = useWriteContract();
