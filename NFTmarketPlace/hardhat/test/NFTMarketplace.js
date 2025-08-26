@@ -17,6 +17,8 @@ describe("NFTMarketplace",function(){
         mockNFT=await MockNft.deploy();
          await mockNFT.waitForDeployment(); 
        
+         console.log("Mock Nft address",mockNFT.target);
+         
         
         //Mint the Nft to the seller
         await mockNFT.connect(seller).mint(seller.address);

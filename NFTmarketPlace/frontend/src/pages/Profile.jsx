@@ -1,6 +1,7 @@
 import React from "react";
 import { useAccount } from "wagmi";
 import MintButton from "../components/MintButton";
+import GetNFTs from "../components/GetNFTs";
 
 const Profile = () => {
   const { address, isConnected } = useAccount();
@@ -26,6 +27,7 @@ const Profile = () => {
             <div className="mt-8">
               <h2 className="text-lg font-semibold mb-2">Your NFTs</h2>
               <p className="text-gray-500">No NFTs loaded yet...</p>
+              <GetNFTs/>
             </div>
           </>
         ) : (

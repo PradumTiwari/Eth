@@ -41,8 +41,14 @@ contract NFTMarketplace is ReentrancyGuard, Ownable{
             //Check that msg.sender owns the nft
             require(nft.ownerOf(tokenId)==msg.sender,"You are not a Owner of this nft");
 
+         // Check if already listed
+              require(listings[nftAddress][tokenId].price == 0, "Already listed");
             //Check marketPlace approval
-            require(nft.getApproved(tokenId)==address(this),"Market Place not approved");
+          require(
+        nft.getApproved(tokenId) == address(this) ||
+        nft.isApprovedForAll(msg.sender, address(this)),
+        "Marketplace not approved"
+    );
 
             listings[nftAddress][tokenId]=Listing(price,msg.sender);
 
@@ -52,21 +58,21 @@ contract NFTMarketplace is ReentrancyGuard, Ownable{
         function buyItem(address nftAddress,uint256 tokenId) external payable nonReentrant{
             Listing memory listedItem=listings[nftAddress][tokenId];
             require(listedItem.price>0,"Item not Listed For sale");
-            require(msg.value<=listedItem.price,"Not Enough ETH sent");
+            require(msg.value>=listedItem.price,"Not Enough ETH sent");
 
-            
+            //Ensure seller still owns the token (clear error if not)
+
+              require(IERC721(nftAddress).ownerOf(tokenId) == listedItem.seller, "Seller not owner");
 
             //Remove the listing before the transfering
             delete listings[nftAddress][tokenId];
          //Store seller's procceds
-           proceeds[listedItem.seller]+=listedItem.price;
-
-
+           proceeds[listedItem.seller] += msg.value;
 
             //Transfer the nft from the seller to the buyer
-            IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
+              IERC721(nftAddress).safeTransferFrom(listedItem.seller, msg.sender, tokenId);
 
-            emit ItemSold(nftAddress,tokenId,msg.sender,msg.value);
+    emit ItemSold(nftAddress, tokenId, msg.sender, msg.value);
         }
 
 
