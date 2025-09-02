@@ -1,0 +1,11 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+script = "script"
+
+[profile.default.rpc_urls]
+sepolia = "${QUICKNODE_RPC_URL}"
+
+[profile.default.env]
+file = ".env"
